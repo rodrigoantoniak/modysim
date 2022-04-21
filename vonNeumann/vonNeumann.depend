@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1650506348 source:/home/rodrigo/Documentos/ModeloYSimulacion/vonNeumann/main.cpp
+	<stdlib.h>
+	<iostream>
+	<string>
+
