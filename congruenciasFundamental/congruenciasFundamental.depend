@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1650513325 source:/home/rodrigo/Documentos/ModeloYSimulacion/congruenciasFundamental/main.cpp
+	<stdlib.h>
+	<iostream>
+	<string>
+
