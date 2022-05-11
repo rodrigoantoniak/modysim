@@ -11,7 +11,7 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="5329 15" />
+				<Option parameters="5329 200" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
@@ -21,7 +21,9 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="chiCuadrado.hpp" />
 		<Unit filename="main.cpp" />
+		<Unit filename="monobits.hpp" />
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>
