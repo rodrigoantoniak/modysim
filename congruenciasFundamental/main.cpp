@@ -1,7 +1,9 @@
 #include <stdlib.h>
-#include "vonNeumann.hpp"
 #include <iostream>
 #include <string>
+#include "vonNeumann.hpp"
+#include "monobits.hpp"
+#include "chiCuadrado.hpp"
 
 int main(int argc, char* argv[]) {
     using namespace std;
@@ -50,7 +52,6 @@ int main(int argc, char* argv[]) {
         cout << "Error: ninguno de los números puede ser igual a cero." << endl;
         return 1;
     }
-    unsigned int* v = vonNeumann(k, x);
     if (a >= m) {
         cout << "Error: el modulo es menor o igual a la primera semilla." << endl;
         return 1;
@@ -63,6 +64,7 @@ int main(int argc, char* argv[]) {
         cout << "Error: la semilla para los números anteriores a generar no es un número natural de cuatro dígitos." << endl;
         return 1;
     }
+    unsigned int* v = vonNeumann(k, x);
     unsigned int w[n];
     // Lo siguiente no se realiza dentro del bucle porque obtiene valores distintos a los utilizados
     // Si bien, es posible ubicarlos dentro del bucle; lo haría menos óptimo al ejecutar
@@ -92,22 +94,47 @@ int main(int argc, char* argv[]) {
         }
         w[k+i] = (a * w[k+i-1] + c * w[i]) % m;
     }
-    // Por último, se imprimirán los valores aleatorios obtenidos (no cuentan los primeros k valores)
-    // Actualmente, no se agregan ceros a la izquierda de los números enteros
-    // Para esto último, se necesita obtener el número con mayor cantidad de dígitos en un recorrido del vector
+    unsigned int* y = NULL;
+    unsigned int* z = NULL;
+    a = 0; // Conserva la posición del array
     for (i = 0; i < n; i++) {
-        k = 1;
-        while (k < w[i]) {
+        c = 1; // Cantidad de dígitos de w[i]
+        k = 10; // Representa 10 ^ c
+        while (k <= w[i]) {
             k *= 10;
+            c++;
         }
+        // Para operar correctamente con realloc, debe alternarse los punteros
+        if (i % 2) {
+            z = (unsigned int*) realloc(y, (a + c) * sizeof(unsigned int));
+        } else {
+            y = (unsigned int*) realloc(z, (a + c) * sizeof(unsigned int));
+        }
+        // Se imprimen cada uno de los dígitos de los números generados, excepto el último dígito
         for (x = k; x > 10; x /= 10) {
             m = w[i] % x;
             m *= 10;
             m /= x;
+            (i % 2) ? (z[a] = m) : (y[a] = m); // Se alterna la igualdad según si i es impar o no
             cout << m << ' ';
+            a++;
         }
+        // Como el último dígito se puede obtener con una operación sencilla, se pone fuera del bucle
         m = w[i] % 10;
+        (i % 2) ? (z[a] = m) : (y[a] = m); // Se alterna la igualdad según si i es impar o no
+        // Además, en este programa se realiza un salto de línea para distinguir los números generados
         cout << m << endl;
+        a++;
     }
+    if (n % 2) z = (unsigned int*) realloc(y, a * sizeof(unsigned int));
+    argumento = (monobits(a,z))
+        ? "Ha pasado la prueba de monobits."
+        : "No ha pasado la prueba de monobits.";
+    cout << argumento << endl;
+    argumento = (chiCuadrado(a,z))
+        ? "Ha pasado la prueba de chi cuadrado."
+        : "No ha pasado la prueba de chi cuadrado.";
+    cout << argumento << endl;
+    free(z);
     return 0;
 }
