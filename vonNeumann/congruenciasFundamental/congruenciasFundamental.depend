@@ -1,9 +1,0 @@
-# depslib dependency file v1.0
-1650887387 source:/home/rodrigo/Documentos/ModeloYSimulacion/congruenciasFundamental/main.cpp
-	<stdlib.h>
-	"vonNeumann.hpp"
-	<iostream>
-	<string>
-
-1650772319 /home/rodrigo/Documentos/ModeloYSimulacion/congruenciasFundamental/vonNeumann.hpp
-
