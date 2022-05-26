@@ -12,10 +12,11 @@ bool chiCuadrado(unsigned int n, unsigned int* x) {
         // Esta variable sólo sumará valores positivos
         mb += (double(v[i]) - double(n) / double(10)) * (double(v[i]) - double(n) / double(10));
     }
-    // Esto es lo mismo que dividir 10 veces sobre (n * 0.1)
+    // Esto es lo mismo que dividir sobre (n * 0.1)
     mb /= n;
-    // Por último, se compara con la probabilidad de 0.01 para 9 grados de libertad en distribución chi cuadrado
-    return (mb < 21.666) ? true : false;
+    mb *= 10;
+    // Por último, se compara con la probabilidad de 0.1 para 9 grados de libertad en distribución chi cuadrado
+    return (mb < 14.6837) ? true : false;
 }
 
 #endif // CHICUADRADO_HPP_INCLUDED

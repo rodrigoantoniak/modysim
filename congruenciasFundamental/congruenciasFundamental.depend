@@ -1,16 +1,17 @@
 # depslib dependency file v1.0
-1652301086 source:/home/rodrigo/Documentos/ModeloYSimulacion/congruenciasFundamental/main.cpp
+1653590694 source:/home/rodrigo/Documentos/ModeloYSimulacion/congruenciasFundamental/main.cpp
 	<stdlib.h>
+	<climits>
 	<iostream>
 	<string>
 	"vonNeumann.hpp"
 	"monobits.hpp"
 	"chiCuadrado.hpp"
 
-1650772319 /home/rodrigo/Documentos/ModeloYSimulacion/congruenciasFundamental/vonNeumann.hpp
+1653331191 /home/rodrigo/Documentos/ModeloYSimulacion/congruenciasFundamental/vonNeumann.hpp
 
 1652293277 /home/rodrigo/Documentos/ModeloYSimulacion/congruenciasFundamental/monobits.hpp
 	<math.h>
 
-1652300483 /home/rodrigo/Documentos/ModeloYSimulacion/congruenciasFundamental/chiCuadrado.hpp
+1653084299 /home/rodrigo/Documentos/ModeloYSimulacion/congruenciasFundamental/chiCuadrado.hpp
 

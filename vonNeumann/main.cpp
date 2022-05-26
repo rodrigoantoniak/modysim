@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <climits>
 #include <iostream>
 #include <string>
 #include "monobits.hpp"
@@ -27,24 +28,30 @@ int main(int argc, char* argv[]) {
             }
         }
     }
-    x = atoi(argv[1]);
-    n = atoi(argv[2]);
-    if ((x < 1000) || (x > 9999)) {
+    unsigned long b = strtoul(argv[1], NULL, 10); // Esta función es más segura
+    unsigned long d = strtoul(argv[2], NULL, 10); // Esta función es más segura
+    if ((b < 1000) || (b > 9999)) { // Asegura también que b puede transformarse en unsigned int
         cout << "Error: la semilla no es un número natural de cuatro dígitos." << endl;
         return 1;
     }
-    if (!(n)) {
+    if (!(d)) {
         cout << "Error: la cantidad de números aleatorios a generar no puede ser cero." << endl;
         return 1;
     }
+    if (d > UINT_MAX) { // Asegura que d puede transformarse en unsigned int
+        cout << "Error: la cantidad de números aleatorios a generar es muy grande." << endl;
+        return 1;
+    }
+    n = (unsigned int)d; // Casteo seguro
+    x = (unsigned int)b; // Casteo seguro
     unsigned int i, y;
-    unsigned int v[n];
-    for (i = 0; i < n; i++) {
+    unsigned int v[(n+(n%4))/4];
+    for (i = 0; i < (n+(n%4))/4; i++) {
         // Aquí se comprueba que la semilla no termine en 00
         // Si es un número entre 0 y 99, se adiciona un número entre 1 y 99 (multiplicado por 100) para más aleatoriedad
         if (x / 100 == 0) {
             // El número a sumar depende de la iteración en que se halle la búsqueda de números pseudoaleatorios
-            y = 50 - (i % 49);
+            y = 100 - (i % 99);
             y -= 1;
             y *= 100;
             x += y;
@@ -64,30 +71,37 @@ int main(int argc, char* argv[]) {
         // Por último, el número generado es la nueva semilla
         x = y;
     }
-    unsigned int w[n*4];
+    unsigned int w[n];
     unsigned int z;
     for (i = 0; i < n; i++) {
+        x = 10000;
         // Se imprimen cada uno de los dígitos de los números generados, excepto el último dígito
-        z = 0;
-        for (x = 10000; x > 10; x /= 10) {
-            y = v[i] % x;
+        // También existe un corte en caso de generar los números necesarios
+        while ((x > 10) && (i < n)) {
+            y = v[i/4] % x;
             y *= 10;
             y /= x;
-            w[(i*4)+z] = y;
+            w[i] = y;
             cout << y << ' ';
-            z++;
+            i++;
+            x /= 10;
+        }
+        // Si se llega al caso de corte, se imprime un salto de línea y se termina la impresión de dígitos
+        if (i == n) {
+            cout << endl;
+            break;
         }
         // Como el último dígito se puede obtener con una operación sencilla, se pone fuera del bucle
-        y = v[i] % 10;
-        w[(i*4)+3] = y;
+        y = v[i/4] % 10;
+        w[i] = y;
         // Además, en este programa se realiza un salto de línea para distinguir las cifras cada 4 dígitos
         cout << y << endl;
     }
-    argumento = (monobits(n*4,w))
+    argumento = (monobits(n,w))
         ? "Ha pasado la prueba de monobits."
         : "No ha pasado la prueba de monobits.";
     cout << argumento << endl;
-    argumento = (chiCuadrado(n*4,w))
+    argumento = (chiCuadrado(n,w))
         ? "Ha pasado la prueba de chi cuadrado."
         : "No ha pasado la prueba de chi cuadrado.";
     cout << argumento << endl;

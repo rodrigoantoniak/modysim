@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <climits>
 #include <iostream>
 #include <string>
 #include "vonNeumann.hpp"
@@ -41,92 +42,157 @@ int main(int argc, char* argv[]) {
             }
         }
     }
-    unsigned int k, m, n, x;
-    a = atoi(argv[1]);
-    c = atoi(argv[2]);
-    k = atoi(argv[3]);
-    m = atoi(argv[4]);
-    n = atoi(argv[5]);
-    x = atoi(argv[6]);
-    if (!(a && c && k && m && n && x)) {
+    unsigned long b = strtoul(argv[1], NULL, 10); // Esta función es más segura
+    unsigned long d = strtoul(argv[2], NULL, 10); // Esta función es más segura
+    unsigned long e = strtoul(argv[3], NULL, 10); // Esta función es más segura
+    unsigned long f = strtoul(argv[4], NULL, 10); // Esta función es más segura
+    unsigned long g = strtoul(argv[5], NULL, 10); // Esta función es más segura
+    unsigned long h = strtoul(argv[6], NULL, 10); // Esta función es más segura
+    if (!(b && d && e && f && g && h)) {
         cout << "Error: ninguno de los números puede ser igual a cero." << endl;
         return 1;
     }
-    if (a >= m) {
+    if (b >= f) {
         cout << "Error: el modulo es menor o igual a la primera semilla." << endl;
         return 1;
     }
-    if (k > n) {
+    if (e > g) {
         cout << "Error: la cantidad de números anteriores es mayor a los números aleatorios a generar." << endl;
         return 1;
     }
-    if ((x < 1000) || (x > 9999)) {
+    if ((h < 1000) || (h > 9999)) {
         cout << "Error: la semilla para los números anteriores a generar no es un número natural de cuatro dígitos." << endl;
         return 1;
     }
+    if (d > UINT_MAX) { // Asegura que d puede transformarse en unsigned int
+        cout << "Error: la cantidad de números aleatorios a generar es muy grande." << endl;
+        return 1;
+    }
+    if (f > UINT_MAX) { // Asegura que f puede transformarse en unsigned int
+        cout << "Error: la cantidad de números aleatorios a generar es muy grande." << endl;
+        return 1;
+    }
+    if (g > UINT_MAX) { // Asegura que g puede transformarse en unsigned int
+        cout << "Error: la cantidad de números aleatorios a generar es muy grande." << endl;
+        return 1;
+    }
+    a = (unsigned int)b; // Casteo seguro
+    c = (unsigned int)d; // Casteo seguro
+    unsigned int k = (unsigned int)e; // Casteo seguro
+    unsigned int m = (unsigned int)f; // Casteo seguro
+    unsigned int n = (unsigned int)g; // Casteo seguro
+    unsigned int x = (unsigned int)h; // Casteo seguro
+    unsigned int j = 1; // Contador de dígitos
+    unsigned int p = 10; // 10 ^ j
+    unsigned int q; // Almacena cada semilla nueva para conteo de dígitos
     unsigned int* v = vonNeumann(k, x);
-    unsigned int w[n];
     // Lo siguiente no se realiza dentro del bucle porque obtiene valores distintos a los utilizados
     // Si bien, es posible ubicarlos dentro del bucle; lo haría menos óptimo al ejecutar
     if (v[0] >= m) {
         cout << "Error: el elemento 1 de la sucesion es mayor o igual al modulo." << endl;
         return 1;
     }
-    // Se almacena el número generado dentro de un vector
-    w[0] = (a * v[k] + c * v[0]) % m;
+    // Se almacena el número generado dentro de q
+    q = (a * v[(k+(k%4))/4] + c * v[0]) % m;
+    while (p <= q) {
+        p *= 10;
+        j++;
+    }
+    unsigned int* y = (unsigned int*) malloc(sizeof(unsigned int));
+    y[0] = q;
+    unsigned int* w = NULL; // w se usará como puntero alternativo a y
     // Después se realiza las mismas operaciones que se encuentran desde el comentario inmediato anterior
     // Este bucle trabaja con los k valores anteriores (después de la primera iteración)
-    unsigned int i;
-    for (i = 1; i < k; i++) {
+    unsigned int i = 1; // Contador de semillas
+    while ((i < (k+(k%4))/4) && (j < n)) {
         if (v[i] >= m) {
             cout << "Error: el elemento " + to_string(i+1)
                     + " de la sucesion es mayor o igual al modulo." << endl;
             return 1;
         }
-        w[i] = (a * w[i-1] + c * v[i]) % m;
-    }
-    // Una vez utilizados los k valores anteriores, se utiliza el vector con los valores finales generados
-    for (i = 0; i < n-k; i++) {
-        if (w[k+i-1] >= m) {
-            cout << "Error: el elemento " + to_string(k+i+1)
-                    + " de la sucesion es mayor o igual al modulo." << endl;
-            return 1;
-        }
-        w[k+i] = (a * w[k+i-1] + c * w[i]) % m;
-    }
-    unsigned int* y = NULL;
-    unsigned int* z = NULL;
-    a = 0; // Conserva la posición del array
-    for (i = 0; i < n; i++) {
-        c = 1; // Cantidad de dígitos de w[i]
-        k = 10; // Representa 10 ^ c
-        while (k <= w[i]) {
-            k *= 10;
-            c++;
+        p = 10;
+        // Se almacena el número generado dentro de q
+        q = (i % 2)
+            ? (a * y[i-1] + c * v[i]) % m
+            : (a * w[i-1] + c * v[i]) % m;
+        j++;
+        while (p <= q) {
+            p *= 10;
+            j++;
         }
         // Para operar correctamente con realloc, debe alternarse los punteros
         if (i % 2) {
-            z = (unsigned int*) realloc(y, (a + c) * sizeof(unsigned int));
+            w = (unsigned int*) realloc(y, (i+1) * sizeof(unsigned int));
+            w[i] = q;
         } else {
-            y = (unsigned int*) realloc(z, (a + c) * sizeof(unsigned int));
+            y = (unsigned int*) realloc(w, (i+1) * sizeof(unsigned int));
+            y[i] = q;
         }
+        i++;
+    }
+    // Una vez utilizados los k valores anteriores, se utiliza el vector con los valores finales generados
+    while (j < n) {
+        if (w[i-((k+(k%4))/4)] >= m) {
+            cout << "Error: el elemento " + to_string(i+1)
+                    + " de la sucesion es mayor o igual al modulo." << endl;
+            return 1;
+        }
+        p = 10;
+        // Se almacena el número generado dentro de q
+        q = (i % 2)
+            ? (a * y[i-1] + c * w[i-((k+(k%4))/4)]) % m
+            : (a * w[i-1] + c * w[i-((k+(k%4))/4)]) % m;
+        j++;
+        while (p <= q) {
+            p *= 10;
+            j++;
+        }
+        // Para operar correctamente con realloc, debe alternarse los punteros
+        if (i % 2) {
+            w = (unsigned int*) realloc(y, (i+1) * sizeof(unsigned int));
+            w[i] = q;
+        } else {
+            y = (unsigned int*) realloc(w, (i+1) * sizeof(unsigned int));
+            y[i] = q;
+        }
+        i++;
+    }
+    if (n % 2) w = (unsigned int*) realloc(y, i * sizeof(unsigned int));
+    unsigned int z[n];
+    a = 0; // Conserva la posición del array
+    for (c = 0; c < i-1; c++) {
+        p = 10;
+        while (p <= w[c]) p *= 10;
         // Se imprimen cada uno de los dígitos de los números generados, excepto el último dígito
-        for (x = k; x > 10; x /= 10) {
-            m = w[i] % x;
+        for (x = p; x > 10; x /= 10) {
+            m = w[c] % x;
             m *= 10;
             m /= x;
-            (i % 2) ? (z[a] = m) : (y[a] = m); // Se alterna la igualdad según si i es impar o no
+            z[a] = m;
             cout << m << ' ';
             a++;
         }
         // Como el último dígito se puede obtener con una operación sencilla, se pone fuera del bucle
-        m = w[i] % 10;
-        (i % 2) ? (z[a] = m) : (y[a] = m); // Se alterna la igualdad según si i es impar o no
+        m = w[c] % 10;
+        z[a] = m;
         // Además, en este programa se realiza un salto de línea para distinguir los números generados
         cout << m << endl;
         a++;
     }
-    if (n % 2) z = (unsigned int*) realloc(y, a * sizeof(unsigned int));
+    p = 10;
+    while (p <= w[i-1]) p *= 10;
+    // Se imprimen dígitos del último número generado, hasta completar lo necesario
+    x = p;
+    while (a < n) {
+        m = w[i-1] % x;
+        m *= 10;
+        m /= x;
+        z[a] = m;
+        cout << m << ' ';
+        a++;
+        x /= 10;
+    }
+    cout << endl;
     argumento = (monobits(a,z))
         ? "Ha pasado la prueba de monobits."
         : "No ha pasado la prueba de monobits.";
@@ -135,6 +201,6 @@ int main(int argc, char* argv[]) {
         ? "Ha pasado la prueba de chi cuadrado."
         : "No ha pasado la prueba de chi cuadrado.";
     cout << argumento << endl;
-    free(z);
+    free(w); // Con esto, y se libera también
     return 0;
 }
