@@ -85,6 +85,7 @@ int main(int argc, char* argv[]) {
     unsigned int j = 1; // Contador de dígitos
     unsigned int p = 10; // 10 ^ j
     unsigned int q; // Almacena cada semilla nueva para conteo de dígitos
+    unsigned int r; // Cantidad máxima de dígitos
     unsigned int* v = vonNeumann(k, x);
     // Lo siguiente no se realiza dentro del bucle porque obtiene valores distintos a los utilizados
     // Si bien, es posible ubicarlos dentro del bucle; lo haría menos óptimo al ejecutar
@@ -104,18 +105,16 @@ int main(int argc, char* argv[]) {
     // Después se realiza las mismas operaciones que se encuentran desde el comentario inmediato anterior
     // Este bucle trabaja con los k valores anteriores (después de la primera iteración)
     unsigned int i = 1; // Contador de semillas
-    while ((i < (k+(k%4))/4) && (j < n)) {
+    while ((i < (k+(k%4))/4) && (i*j < n)) {
         if (v[i] >= m) {
             cout << "Error: el elemento " + to_string(i+1)
                     + " de la sucesion es mayor o igual al modulo." << endl;
             return 1;
         }
-        p = 10;
         // Se almacena el número generado dentro de q
         q = (i % 2)
             ? (a * y[i-1] + c * v[i]) % m
             : (a * w[i-1] + c * v[i]) % m;
-        j++;
         while (p <= q) {
             p *= 10;
             j++;
@@ -131,18 +130,16 @@ int main(int argc, char* argv[]) {
         i++;
     }
     // Una vez utilizados los k valores anteriores, se utiliza el vector con los valores finales generados
-    while (j < n) {
+    while (i*j < n) {
         if (w[i-((k+(k%4))/4)] >= m) {
             cout << "Error: el elemento " + to_string(i+1)
                     + " de la sucesion es mayor o igual al modulo." << endl;
             return 1;
         }
-        p = 10;
         // Se almacena el número generado dentro de q
         q = (i % 2)
             ? (a * y[i-1] + c * w[i-((k+(k%4))/4)]) % m
             : (a * w[i-1] + c * w[i-((k+(k%4))/4)]) % m;
-        j++;
         while (p <= q) {
             p *= 10;
             j++;
@@ -161,8 +158,6 @@ int main(int argc, char* argv[]) {
     unsigned int z[n];
     a = 0; // Conserva la posición del array
     for (c = 0; c < i-1; c++) {
-        p = 10;
-        while (p <= w[c]) p *= 10;
         // Se imprimen cada uno de los dígitos de los números generados, excepto el último dígito
         for (x = p; x > 10; x /= 10) {
             m = w[c] % x;
@@ -179,9 +174,6 @@ int main(int argc, char* argv[]) {
         cout << m << endl;
         a++;
     }
-    p = 10;
-    while (p <= w[i-1]) p *= 10;
-    // Se imprimen dígitos del último número generado, hasta completar lo necesario
     x = p;
     while (a < n) {
         m = w[i-1] % x;

@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1653590694 source:/home/rodrigo/Documentos/ModeloYSimulacion/congruenciasFundamental/main.cpp
+1653591699 source:/home/rodrigo/Documentos/ModeloYSimulacion/congruenciasFundamental/main.cpp
 	<stdlib.h>
 	<climits>
 	<iostream>
