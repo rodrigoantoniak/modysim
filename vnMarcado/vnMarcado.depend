@@ -1,0 +1,19 @@
+# depslib dependency file v1.0
+1654803326 source:/home/rodrigo/Documentos/ModeloYSimulacion/vnMarcado/main.cpp
+	<stdlib.h>
+	<climits>
+	<iomanip>
+	<iostream>
+	<regex>
+	<string>
+	"vonNeumann.hpp"
+	"monobits.hpp"
+	"chiCuadrado.hpp"
+
+1654708148 /home/rodrigo/Documentos/ModeloYSimulacion/vnMarcado/vonNeumann.hpp
+
+1654708473 /home/rodrigo/Documentos/ModeloYSimulacion/vnMarcado/monobits.hpp
+	<math.h>
+
+1654708491 /home/rodrigo/Documentos/ModeloYSimulacion/vnMarcado/chiCuadrado.hpp
+
