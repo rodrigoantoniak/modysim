@@ -1,0 +1,31 @@
+# depslib dependency file v1.0
+1652995136 source:/home/rodrigo/Documentos/ModeloYSimulacion/vnSerializado/vnSerializado/main.cpp
+	<stdlib.h>
+	<iostream>
+	<string>
+	"vonNeumann.hpp"
+	"monobits.hpp"
+	"chiCuadrado.hpp"
+
+1652994346 /home/rodrigo/Documentos/ModeloYSimulacion/vnSerializado/vnSerializado/vonNeumann.hpp
+
+1652993058 /home/rodrigo/Documentos/ModeloYSimulacion/vnSerializado/vnSerializado/monobits.hpp
+	<math.h>
+
+1653083449 /home/rodrigo/Documentos/ModeloYSimulacion/vnSerializado/vnSerializado/chiCuadrado.hpp
+
+1654543286 source:/home/rodrigo/Documentos/ModeloYSimulacion/vnSerializado/main.cpp
+	<stdlib.h>
+	<iostream>
+	<string>
+	"vonNeumann.hpp"
+	"monobits.hpp"
+	"chiCuadrado.hpp"
+
+1654542235 /home/rodrigo/Documentos/ModeloYSimulacion/vnSerializado/vonNeumann.hpp
+
+1654539661 /home/rodrigo/Documentos/ModeloYSimulacion/vnSerializado/monobits.hpp
+	<math.h>
+
+1654543191 /home/rodrigo/Documentos/ModeloYSimulacion/vnSerializado/chiCuadrado.hpp
+
