@@ -1,0 +1,21 @@
+# depslib dependency file v1.0
+1654714916 source:/home/rodrigo/Documentos/ModeloYSimulacion/cfMarcado/cfMarcado/main.cpp
+	<stdlib.h>
+	<climits>
+	<iomanip>
+	<iostream>
+	<string>
+	"congruenciasFundamental.hpp"
+	"monobits.hpp"
+	"chiCuadrado.hpp"
+
+1654715025 /home/rodrigo/Documentos/ModeloYSimulacion/cfMarcado/cfMarcado/congruenciasFundamental.hpp
+	"vonNeumann.hpp"
+
+1654709647 /home/rodrigo/Documentos/ModeloYSimulacion/cfMarcado/cfMarcado/vonNeumann.hpp
+
+1654710371 /home/rodrigo/Documentos/ModeloYSimulacion/cfMarcado/cfMarcado/monobits.hpp
+	<math.h>
+
+1654710410 /home/rodrigo/Documentos/ModeloYSimulacion/cfMarcado/cfMarcado/chiCuadrado.hpp
+
